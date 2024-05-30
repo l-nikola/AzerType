@@ -4,44 +4,34 @@ function afficherResultat(score, nbMotsProposes) {
   spanScore.innerText = affichageScore;
 }
 
-function choisirPhrasesOuMots() {
-  let choix = prompt(
-    "Avec quelle liste désirez-vous jouer : 'mots' ou 'phrases' ?"
-  );
-
-  while (choix !== "mots" && choix !== "phrases") {
-    choix = prompt(
-      "Avec quelle liste désirez-vous jouer : 'mots' ou 'phrases' ?"
-    );
-  }
-
-  return choix;
-}
-
-function lancerBoucleDeJeu(listeProposition) {
-  let score = 0;
-  for (let i = 0; i < listeProposition.length; i++) {
-    let motUtilisateur = prompt("Entrez le mot : " + listeProposition[i]);
-    if (motUtilisateur === listeProposition[i]) {
-      score++;
-    }
-  }
-
-  return score;
+function afficherProposition(proposition) {
+  let zoneProposition = document.querySelector(".zoneProposition");
+  zoneProposition.innerText = proposition;
 }
 
 function lancerJeu() {
-  let choix = choisirPhrasesOuMots();
   let score = 0;
-  let nbMotsProposes = 0;
+  let i = 0;
 
-  if (choix === "mots") {
-    score = lancerBoucleDeJeu(listeMots);
-    nbMotsProposes = listeMots.length;
-  } else {
-    score = lancerBoucleDeJeu(listePhrases);
-    nbMotsProposes = listePhrases.length;
-  }
+  let inputEcriture = document.getElementById("inputEcriture");
+  let btnValiderMot = document.getElementById("btnValiderMot");
 
-  afficherResultat(score, nbMotsProposes);
+  afficherProposition(listeMots[i]);
+
+  btnValiderMot.addEventListener("click", () => {
+    if (inputEcriture.value === listeMots[i]) {
+      score++;
+    }
+    i++;
+    afficherResultat(score, i);
+    inputEcriture.value = "";
+
+    if (listeMots[i] === undefined) {
+      afficherProposition("Le jeu est fini");
+      btnValiderMot.disabled = true;
+    } else {
+      afficherProposition(listeMots[i]);
+    }
+  });
+  afficherResultat(score, i);
 }
